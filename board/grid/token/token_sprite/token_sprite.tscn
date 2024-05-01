@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dudx8bxdmsd2f"]
 
-[ext_resource type="Script" path="res://board/grid/token/token.gd" id="1_2f6yr"]
-[ext_resource type="Texture2D" uid="uid://bsklq884cgsb1" path="res://board/grid/token/sprites/background.png" id="2_pcnop"]
-[ext_resource type="PackedScene" uid="uid://c4p4q7g2qmp3d" path="res://board/grid/token/token_element.tscn" id="3_gvcv7"]
+[ext_resource type="Script" path="res://board/grid/token/token_sprite/token_sprite.gd" id="1_qc7nl"]
+[ext_resource type="Texture2D" uid="uid://bsklq884cgsb1" path="res://board/grid/token/token_sprite/sprites/background.png" id="2_cqptm"]
+[ext_resource type="PackedScene" uid="uid://c4p4q7g2qmp3d" path="res://board/grid/token/token_element.tscn" id="3_3tsji"]
 
 [node name="Token" type="Control"]
 custom_minimum_size = Vector2(128, 128)
@@ -11,7 +11,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 1
-script = ExtResource("1_2f6yr")
+script = ExtResource("1_qc7nl")
 
 [node name="Visual" type="Control" parent="."]
 layout_mode = 1
@@ -30,13 +30,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("2_pcnop")
+texture = ExtResource("2_cqptm")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TokenElement" parent="Visual" instance=ExtResource("3_gvcv7")]
+[node name="TokenElement" parent="Visual" instance=ExtResource("3_3tsji")]
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Elements" type="Control" parent="Visual"]
 layout_mode = 1

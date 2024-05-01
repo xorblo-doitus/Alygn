@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjprgfslc7qyh"
-path="res://.godot/imported/combining_plant.png-38096926a0a43f026491353b63f59b4f.ctex"
+uid="uid://bfrjc4nksumsu"
+path="res://.godot/imported/combining_water.png-0d9481a5ed0dc2a530f699604aa8bb93.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://board/grid/token/sprites/combining_plant.png"
-dest_files=["res://.godot/imported/combining_plant.png-38096926a0a43f026491353b63f59b4f.ctex"]
+source_file="res://board/grid/token/token_sprite/sprites/combining_water.png"
+dest_files=["res://.godot/imported/combining_water.png-0d9481a5ed0dc2a530f699604aa8bb93.ctex"]
 
 [params]
 

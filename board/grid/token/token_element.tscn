@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4p4q7g2qmp3d"]
 
-[ext_resource type="Texture2D" uid="uid://de5dlm7grvf10" path="res://board/grid/token/sprites/plant.png" id="1_tg6ch"]
+[ext_resource type="Texture2D" uid="uid://de5dlm7grvf10" path="res://board/grid/token/token_sprite/sprites/plant.png" id="1_tg6ch"]
 [ext_resource type="Script" path="res://board/grid/token/token_element.gd" id="2_q30hr"]
 
 [node name="TokenElement" type="TextureRect"]

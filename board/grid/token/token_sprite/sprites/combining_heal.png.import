@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfrjc4nksumsu"
-path="res://.godot/imported/combining_water.png-9c424730ac376f48d42c62f1ad8661f1.ctex"
+uid="uid://dgifjcc54ldir"
+path="res://.godot/imported/combining_heal.png-9de2c49850a4ab08dced18ecd937f329.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://board/grid/token/sprites/combining_water.png"
-dest_files=["res://.godot/imported/combining_water.png-9c424730ac376f48d42c62f1ad8661f1.ctex"]
+source_file="res://board/grid/token/token_sprite/sprites/combining_heal.png"
+dest_files=["res://.godot/imported/combining_heal.png-9de2c49850a4ab08dced18ecd937f329.ctex"]
 
 [params]
 

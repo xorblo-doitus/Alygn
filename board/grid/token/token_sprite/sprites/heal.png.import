@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3j2826yfpecu"
-path="res://.godot/imported/combining_fire.png-22618b5659f013182665a2bf0d31a7b6.ctex"
+uid="uid://bk5n2bjvxnwyl"
+path="res://.godot/imported/heal.png-e611bb803fce1dbb618fac4d91fe6a02.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://board/grid/token/sprites/combining_fire.png"
-dest_files=["res://.godot/imported/combining_fire.png-22618b5659f013182665a2bf0d31a7b6.ctex"]
+source_file="res://board/grid/token/token_sprite/sprites/heal.png"
+dest_files=["res://.godot/imported/heal.png-e611bb803fce1dbb618fac4d91fe6a02.ctex"]
 
 [params]
 

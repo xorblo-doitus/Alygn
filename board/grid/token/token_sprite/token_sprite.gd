@@ -20,17 +20,17 @@ enum Type {
 
 const TEXTURE_FOR_TYPE = {
 	Type.NULL: null,
-	Type.PLANT: preload("res://board/grid/token/sprites/plant.png"),
-	Type.WATER: preload("res://board/grid/token/sprites/water.png"),
-	Type.FIRE: preload("res://board/grid/token/sprites/fire.png"),
-	Type.HEAL: preload("res://board/grid/token/sprites/heal.png"),
+	Type.PLANT: preload("res://board/grid/token/token_sprite/sprites/plant.png"),
+	Type.WATER: preload("res://board/grid/token/token_sprite/sprites/water.png"),
+	Type.FIRE: preload("res://board/grid/token/token_sprite/sprites/fire.png"),
+	Type.HEAL: preload("res://board/grid/token/token_sprite/sprites/heal.png"),
 }
 const COMBINING_TEXTURE_FOR_TYPE = {
 	Type.NULL: null,
-	Type.PLANT: preload("res://board/grid/token/sprites/combining_plant.png"),
-	Type.WATER: preload("res://board/grid/token/sprites/combining_water.png"),
-	Type.FIRE: preload("res://board/grid/token/sprites/combining_fire.png"),
-	Type.HEAL: preload("res://board/grid/token/sprites/combining_heal.png"),
+	Type.PLANT: preload("res://board/grid/token/token_sprite/sprites/combining_plant.png"),
+	Type.WATER: preload("res://board/grid/token/token_sprite/sprites/combining_water.png"),
+	Type.FIRE: preload("res://board/grid/token/token_sprite/sprites/combining_fire.png"),
+	Type.HEAL: preload("res://board/grid/token/token_sprite/sprites/combining_heal.png"),
 }
 
 
