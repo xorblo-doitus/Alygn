@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+
+# GhostWriter
+*.md.backup
+
+# GUT
+.gut_editor_shortcuts.cfg
+
+# Temporary files
+*.tmp
+
+# Exports
+quick_export*

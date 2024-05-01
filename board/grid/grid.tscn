@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://715vqlpuvb3q"]
+
+[ext_resource type="Script" path="res://board/grid/grid.gd" id="1_nhcxa"]
+
+[node name="Grid" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 5
+script = ExtResource("1_nhcxa")
+
+[connection signal="sort_children" from="." to="." method="_on_sort_children"]
