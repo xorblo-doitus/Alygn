@@ -12,7 +12,7 @@ func set_visuals(token_line: TokenLine, grid: Grid) -> void:
 	clear_points()
 	
 	for index in token_line.index:
-		add_point(to_local(grid.get_token(index).get_global_center()))
+		add_point(to_local(grid.get_token_sprite(index).get_global_center()))
 	
 	default_color = Token.get_color(token_line.type)
 	default_color.a /= 5.0

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://board/grid/token/token_sprite/token_sprite.gd" id="1_qc7nl"]
 [ext_resource type="Texture2D" uid="uid://bsklq884cgsb1" path="res://board/grid/token/token_sprite/sprites/background.png" id="2_cqptm"]
-[ext_resource type="PackedScene" uid="uid://c4p4q7g2qmp3d" path="res://board/grid/token/token_element.tscn" id="3_3tsji"]
+[ext_resource type="PackedScene" uid="uid://c4p4q7g2qmp3d" path="res://board/grid/token/token_sprite/token_element.tscn" id="3_jmqrx"]
 
 [node name="Token" type="Control"]
 custom_minimum_size = Vector2(128, 128)
@@ -34,7 +34,7 @@ texture = ExtResource("2_cqptm")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TokenElement" parent="Visual" instance=ExtResource("3_3tsji")]
+[node name="TokenElement" parent="Visual" instance=ExtResource("3_jmqrx")]
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0

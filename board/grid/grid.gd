@@ -16,7 +16,7 @@ signal matches_changed(matches: Array[TokenLine])
 @export var minimum_token_alignement: int = 3
 
 
-var _currently_dragged: Token
+var _currently_dragged: TokenSprite
 var _dragged_global_position: Vector2
 var _drag_offset: Vector2
 var _swap_screen_pos: Vector2
@@ -26,17 +26,18 @@ var _token_size_with_margin: Vector2
 func _ready() -> void:
 	for x in columns:
 		for y in rows:
-			var new_token: Token = preload("res://board/grid/token/token.tscn").instantiate()
-			new_token.randomize_type()
-			new_token.custom_minimum_size = token_size
-			new_token.reset_size()
-			new_token.clicked.connect(_on_token_clicked.bind(new_token))
-			new_token.type_changed.connect(check)
-			add_child(new_token)
+			var new_token_sprite: TokenSprite = preload("res://board/grid/token/token_sprite/token_sprite.tscn").instantiate()
+			new_token_sprite.token = Token.new()
+			new_token_sprite.token.randomize_type()
+			new_token_sprite.custom_minimum_size = token_size
+			new_token_sprite.reset_size()
+			new_token_sprite.clicked.connect(_on_token_sprite_clicked.bind(new_token_sprite))
+			new_token_sprite.type_changed.connect(check)
+			add_child(new_token_sprite)
 
 
-func _on_token_clicked(token: Token) -> void:
-	drag(token)
+func _on_token_sprite_clicked(token_sprite: TokenSprite) -> void:
+	drag(token_sprite)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -53,7 +54,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if target == Vector2i.ZERO:
 					break
 				
-				var swap_with: Token = get_token_at(get_token_pos(_currently_dragged) + target)
+				var swap_with: TokenSprite = get_token_sprite_at(get_token_sprite_pos(_currently_dragged) + target)
 				
 				if swap_with == null:
 					break
@@ -74,14 +75,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			undrag()
 
 
-func drag(token: Token) -> void:
+func drag(token_sprite: TokenSprite) -> void:
 	if _currently_dragged:
 		return
 	
-	_currently_dragged = token
+	_currently_dragged = token_sprite
 	_swap_screen_pos = get_global_mouse_position()
-	_drag_offset = token.get_visual_screen_position() - get_global_mouse_position()
-	token.dragged = true
+	_drag_offset = token_sprite.get_visual_screen_position() - get_global_mouse_position()
+	token_sprite.dragged = true
 
 
 func undrag() -> void:
@@ -93,24 +94,24 @@ func undrag() -> void:
 	_currently_dragged = null
 
 
-func get_token_at(pos: Vector2i) -> Token:
+func get_token_sprite_at(pos: Vector2i) -> TokenSprite:
 	if pos.x < 0 or pos.x >= columns or pos.y < 0 or pos.y >= rows:
 		return null
 	
 	return get_child(pos.x + pos.y * columns)
 
 
-func get_token(index: int) -> Token:
+func get_token_sprite(index: int) -> TokenSprite:
 	return get_child(index)
 
 
-func get_token_pos(token: Token) -> Vector2i:
-	var index: int = token.get_index()
+func get_token_sprite_pos(token_sprite: TokenSprite) -> Vector2i:
+	var index: int = token_sprite.get_index()
 	@warning_ignore("integer_division")
 	return Vector2i(index % columns, index / rows)
 
 
-func swap(a: Token, b: Token) -> void:
+func swap(a: TokenSprite, b: TokenSprite) -> void:
 	var a_i: int = a.get_index()
 	var b_i: int = b.get_index()
 	
@@ -165,7 +166,7 @@ func update_tokens_active_types(matches: Array[TokenLine]) -> void:
 			active_types[index] |= match_.type
 	
 	for index in active_types.size():
-		get_token(index).active_type = active_types[index]
+		get_token_sprite(index).token.active_type = active_types[index]
 
 
 func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_alignement) -> Array[TokenLine]:
@@ -332,7 +333,7 @@ func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_aligne
 	#return result.filter(_long_enough.bind(minimum_lenght))
 
 func _index_to_type(index: int) -> Token.Type:
-	return get_token(index).type
+	return get_token_sprite(index).token.type
 
 
 func _long_enough(token_line: TokenLine, minimum_lenght: int) -> bool:
