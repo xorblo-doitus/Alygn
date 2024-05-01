@@ -13,9 +13,4 @@ func setup(type: Token.Type, active_types: Token.Type, p_texture: Texture2D) -> 
 	else:
 		modulate = Token.get_color(type).darkened(disabled_darknest)
 	
-	#if active_types & type:
-		#modulate = Token.get_color(type)
-	#else:
-		#modulate = Color(disabled_lightning, disabled_lightning, disabled_lightning)
-	
 	return self
