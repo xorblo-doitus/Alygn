@@ -17,7 +17,7 @@ enum Type {
 }
 
 
-@export var type: Type = Type.NULL:
+var type: Type = Type.NULL:
 	set(new):
 		type = new
 		type_changed.emit()
@@ -26,6 +26,10 @@ var active_type: Type = Type.NULL:
 	set(new):
 		active_type = new
 		active_type_changed.emit()
+
+
+func _init(i_type: Type = type) -> void:
+	type = i_type
 
 
 func randomize_type() -> void:
@@ -37,8 +41,6 @@ func randomize_type() -> void:
 			@warning_ignore("int_as_enum_without_cast")
 			new_type = 1 << randi_range(0, 3)
 	type = new_type
-
-
 
 
 static func get_color(for_type: Type) -> Color:
