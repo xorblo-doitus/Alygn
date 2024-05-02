@@ -24,16 +24,11 @@ var _token_size_with_margin: Vector2
 
 
 func _ready() -> void:
-	for x in columns:
-		for y in rows:
-			var new_token_sprite: TokenSprite = preload("res://board/grid/token/token_sprite/token_sprite.tscn").instantiate()
-			new_token_sprite.token = Token.new()
-			new_token_sprite.token.randomize_type()
-			new_token_sprite.custom_minimum_size = token_size
-			new_token_sprite.reset_size()
-			new_token_sprite.clicked.connect(_on_token_sprite_clicked.bind(new_token_sprite))
-			new_token_sprite.type_changed.connect(check)
-			add_child(new_token_sprite)
+	_build_sprites()
+	
+	var grid: Array[Token] = _generate_grid_without_alignement(Grid._get_default_deck())
+	for index in grid.size():
+		get_token_sprite(index).token = grid[index]
 
 
 func _on_token_sprite_clicked(token_sprite: TokenSprite) -> void:
@@ -75,6 +70,20 @@ func _unhandled_input(event: InputEvent) -> void:
 			undrag()
 
 
+func _build_sprites() -> void:
+	for x in columns:
+		for y in rows:
+			var new_token_sprite: TokenSprite = preload("res://board/grid/token/token_sprite/token_sprite.tscn").instantiate()
+			new_token_sprite.token = Token.new()
+			#new_token_sprite.token.randomize_type()
+			new_token_sprite.custom_minimum_size = token_size
+			new_token_sprite.reset_size()
+			new_token_sprite.clicked.connect(_on_token_sprite_clicked.bind(new_token_sprite))
+			new_token_sprite.type_changed.connect(check)
+			add_child(new_token_sprite)
+
+
+
 func drag(token_sprite: TokenSprite) -> void:
 	if _currently_dragged:
 		return
@@ -92,6 +101,18 @@ func undrag() -> void:
 	_currently_dragged.dragged = false
 	_currently_dragged.reset_visual_screen_position()
 	_currently_dragged = null
+
+
+func index_to_coord(index: int) -> Vector2i:
+	@warning_ignore("integer_division")
+	return Vector2i(index % columns, index / rows)
+
+
+func coord_to_index(coord: Vector2i) -> int:
+	#if coord.x < 0 or coord.x >= columns or coord.y < 0 or coord.y >= rows:
+		#return -1
+	
+	return coord.x + coord.y * columns
 
 
 func get_token_sprite_at(pos: Vector2i) -> TokenSprite:
@@ -205,3 +226,87 @@ func _index_to_type(index: int) -> Token.Type:
 
 func _long_enough(token_line: TokenLine, minimum_lenght: int) -> bool:
 	return token_line.index.size() >= minimum_lenght
+
+
+func _generate_grid_without_alignement(deck: Array[Token], minimum_lenght: int = minimum_token_alignement) -> Array[Token]:
+	var result: Array[Token] = []
+	deck.shuffle()
+	
+	for y in rows:
+		for x in columns:
+			var discarded: Array[Token] = []
+			result.append(_pop_deck(deck))
+			while _is_aligned_with_up_left(result, Vector2i(x, y), minimum_lenght):
+				discarded.push_back(result.pop_back())
+				result.append(_pop_deck(deck))
+			deck.append_array(discarded)
+	
+	return result
+
+
+func _is_aligned_with_up_left(grid: Array[Token], coord: Vector2i, minimum_lenght: int) -> bool:
+	# Horizontal
+	if coord.x >= minimum_lenght - 1:
+		var type: Token.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))].type
+		for x in range(coord.x - minimum_lenght + 1, coord.x):
+			@warning_ignore("int_as_enum_without_cast")
+			type &= grid[coord_to_index(Vector2i(x, coord.y))].type
+		if type:
+			return true
+	
+	# Vertical
+	if coord.y >= minimum_lenght - 1:
+		var type: Token.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))].type
+		for y in range(coord.y - minimum_lenght + 1, coord.y):
+			@warning_ignore("int_as_enum_without_cast")
+			type &= grid[coord_to_index(Vector2i(coord.x, y))].type
+		if type:
+			return true
+	
+	return false
+
+#func _is_aligned(grid: Array[Token], coord: Vector2i, minimum_lenght: int) -> bool:
+	## Horizontal
+	#for master_x in range(max(0, coord.x - minimum_lenght + 1), min(columns - minimum_lenght, coord.x + 1)):
+		#var type: Token.Type = grid[coord_to_index(Vector2i(master_x, coord.y))].type
+		#for x in range(master_x + 1, master_x + minimum_lenght):
+			#type &= grid[coord_to_index(Vector2i(x, coord.y))].type
+		#if type:
+			#return true
+	#
+	## Vertical
+	#for master_y in range(max(0, coord.y - minimum_lenght + 1), min(rows - minimum_lenght, coord.y + 1)):
+		#var type: Token.Type = grid[coord_to_index(Vector2i(coord.x, master_y))].type
+		#for y in range(master_y + 1, master_y + minimum_lenght):
+			#type &= grid[coord_to_index(Vector2i(coord.x, y))].type
+		#if type:
+			#return true
+	#
+	#return false
+
+
+func _pop_deck(deck: Array[Token]) -> Token:
+	if deck:
+		return deck.pop_back()
+	#elif discarded:
+		#deck.append_array(discarded)
+		#discarded.clear()
+		#return deck.pop_back()
+	else:
+		return Token.new()
+
+
+static func _get_default_deck() -> Array[Token]:
+	var result: Array[Token] = []
+	
+	for __ in 10:
+		result.push_back(Token.new(Token.Type.PLANT))
+		result.push_back(Token.new(Token.Type.WATER))
+		result.push_back(Token.new(Token.Type.FIRE))
+	
+	for __ in 4:
+		result.push_back(Token.new(Token.Type.HEAL))
+		
+	result.push_back(Token.new(Token.Type.ANY))
+	
+	return result
