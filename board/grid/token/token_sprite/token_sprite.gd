@@ -81,6 +81,7 @@ func scores(to: Vector2, type: Token.Type, tween_duration: float = 0.5) -> void:
 
 
 func fall() -> void:
+	z_index = 1
 	create_tween().tween_property(
 		visual,
 		"global_position:y",
@@ -97,6 +98,7 @@ func fall() -> void:
 
 
 func refill() -> void:
+	z_index = 0
 	visual.position.x = 0
 	visual.global_position.y = get_viewport_rect().position.y - visual.size.y
 	
