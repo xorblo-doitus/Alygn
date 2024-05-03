@@ -2,31 +2,49 @@ class_name Grid
 extends GridContainer
 
 
+signal state_changed()
 signal matches_changed(matches: Array[TokenLine])
+
+
+enum State {
+	NONE,
+	DRAGGABLE,
+	DRAGGING,
+	SCORING,
+	FILLING,
+}
 
 
 @export var rows: int = 5
 @export var token_size: Vector2 = Vector2(128, 128):
 	set(new):
 		token_size = new
-		_token_size_with_margin = token_size + Vector2(
-			get_theme_constant("h_separation"),
-			get_theme_constant("v_separation"),
-		)
+		#_token_size_with_margin = token_size + Vector2(
+			#get_theme_constant("h_separation"),
+			#get_theme_constant("v_separation"),
+		#)
 @export var minimum_token_alignement: int = 3
 
 
+var _state: State = State.DRAGGABLE:
+	set(new):
+		_state = new
+		state_changed.emit()
+
+var _player_deck: Array[Token] = Grid._get_default_deck()
+
+# Dragging vars
 var _currently_dragged: TokenSprite
 var _dragged_global_position: Vector2
 var _drag_offset: Vector2
 var _swap_screen_pos: Vector2
-var _token_size_with_margin: Vector2
+#var _token_size_with_margin: Vector2
 
 
 func _ready() -> void:
 	_build_sprites()
 	
-	var grid: Array[Token] = _generate_grid_without_alignement(Grid._get_default_deck())
+	var grid: Array[Token] = _generate_grid_without_alignement(_player_deck)
 	for index in grid.size():
 		get_token_sprite(index).token = grid[index]
 
@@ -67,7 +85,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			_currently_dragged.set_visual_screen_position(_dragged_global_position)
 	if event is InputEventMouseButton:
 		if not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			undrag()
+			if _state == State.DRAGGING:
+				undrag()
+				if _matches_cache:
+					scores()
 
 
 func _build_sprites() -> void:
@@ -85,9 +106,10 @@ func _build_sprites() -> void:
 
 
 func drag(token_sprite: TokenSprite) -> void:
-	if _currently_dragged:
+	if _state != State.DRAGGABLE:
 		return
 	
+	_state = State.DRAGGING
 	_currently_dragged = token_sprite
 	_swap_screen_pos = get_global_mouse_position()
 	_drag_offset = token_sprite.get_visual_screen_position() - get_global_mouse_position()
@@ -95,12 +117,70 @@ func drag(token_sprite: TokenSprite) -> void:
 
 
 func undrag() -> void:
-	if _currently_dragged == null:
+	if _state != State.DRAGGING:
 		return
 	
 	_currently_dragged.dragged = false
 	_currently_dragged.reset_visual_screen_position()
 	_currently_dragged = null
+	
+	_state = State.DRAGGABLE
+
+
+func scores() -> void:
+	if _state != State.NONE and _state != State.DRAGGABLE:
+		return
+	
+	_state = State.SCORING
+	
+	#var token_activation_count: Dictionary = {}
+	#for token_line in _matches_cache:
+		#for index in token_line.index:
+			#var token_sprite: TokenSprite = get_token_sprite(index)
+			#token_activation_count[token_sprite] = token_activation_count.get(token_sprite, 0) + 1
+	
+	var activated_tokens: Array[TokenSprite] = []
+	for token_line in _matches_cache:
+		token_line.scored.emit()
+		for index in token_line.index:
+			var token_sprite: TokenSprite = get_token_sprite(index)
+			if token_sprite not in activated_tokens:
+				activated_tokens.push_back(token_sprite)
+			token_sprite.scores(Vector2(860, 330), token_line.type)
+			await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.5).timeout
+	
+	for token_sprite in activated_tokens:
+		_player_deck.push_back(token_sprite.token)
+		token_sprite.fall()
+		await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.6).timeout
+	
+	_state = State.NONE
+	refill(activated_tokens, _player_deck)
+
+
+func refill(sprites: Array[TokenSprite], deck: Array[Token]) -> void:
+	if _state != State.NONE and _state != State.DRAGGABLE:
+		return
+	
+	_state = State.FILLING
+	
+	deck.shuffle()
+	for sprite in sprites:
+		sprite.token = deck.pop_back()
+		sprite.adapt_visual_to_type()
+		sprite.refill()
+		await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.6).timeout
+	
+	check()
+	_state = State.DRAGGABLE
+	
+	if _matches_cache:
+		scores()
+	
+
 
 
 func index_to_coord(index: int) -> Vector2i:
@@ -156,6 +236,7 @@ func _on_sort_children() -> void:
 	check()
 
 
+var _matches_cache: Array[TokenLine] = []
 func check() -> void:
 	var matches: Array[TokenLine] = []
 	
@@ -174,6 +255,7 @@ func check() -> void:
 		matches.append_array(check_line(index))
 	
 	update_tokens_active_types(matches)
+	_matches_cache = matches
 	matches_changed.emit(matches)
 
 

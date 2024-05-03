@@ -42,7 +42,9 @@ var dragged: bool:
 			visual.z_index = 0
 
 @onready var visual: Control = $Visual
+@onready var background: TextureRect = $Visual/Background
 @onready var elements: Control = $Visual/Elements
+@onready var scoring: Node = $Scoring
 
 
 func _ready() -> void:
@@ -59,6 +61,53 @@ func _gui_input(event: InputEvent) -> void:
 
 func set_visual_screen_position(screen_position: Vector2) -> void:
 	visual.global_position = screen_position
+
+
+func scores(to: Vector2, type: Token.Type, tween_duration: float = 0.5) -> void:
+	var scoring_sprite: TokenSprite = preload("res://board/grid/token/token_sprite/token_sprite.tscn").instantiate()
+	scoring_sprite.token = Token.new(type, type)
+	scoring.add_child(scoring_sprite)
+	scoring_sprite.background.texture = preload("res://board/grid/token/token_sprite/sprites/scoring_background.png")
+	scoring_sprite.background.modulate = Token.get_color(type)
+	scoring_sprite.background.modulate.a /= 4.0
+	scoring_sprite.z_index += 2
+	@warning_ignore("int_as_enum_without_cast")
+	token.active_type -= (type & token.active_type)
+	
+	create_tween().tween_property(
+		scoring_sprite,
+		"global_position",
+		to,
+		tween_duration
+	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK).finished.connect(scoring_sprite.queue_free)
+
+
+func fall() -> void:
+	create_tween().tween_property(
+		visual,
+		"global_position:y",
+		get_viewport_rect().end.y,
+		0.5
+	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	
+	create_tween().tween_property(
+		visual,
+		"global_position:x",
+		visual.global_position.x + randf_range(-256, 256),
+		0.5
+	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUINT)
+
+
+func refill() -> void:
+	visual.position.x = 0
+	visual.global_position.y = get_viewport_rect().position.y - visual.size.y
+	
+	create_tween().tween_property(
+		visual,
+		"position",
+		Vector2.ZERO,
+		0.5
+	).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
 
 
 func get_visual_screen_position() -> Vector2:

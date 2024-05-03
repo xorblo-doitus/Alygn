@@ -30,15 +30,15 @@
      borderlayer="true"
      labelstyle="default"
      inkscape:clip-to-page="false"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="154.14928"
-     inkscape:cy="-294.15642"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="-76.190756"
+     inkscape:cy="79.903067"
      inkscape:window-width="1920"
      inkscape:window-height="991"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g8-1"
      showguides="false">
     <inkscape:page
        x="0"
@@ -121,6 +121,18 @@
        margin="0"
        bleed="0"
        inkscape:label="combining_heal" />
+    <inkscape:page
+       x="-44.151726"
+       y="-8.5058593e-07"
+       width="33.866665"
+       height="33.866669"
+       id="page2"
+       margin="0"
+       bleed="0"
+       inkscape:label="scoring_background"
+       inkscape:export-filename="..\..\..\board\grid\token\token_sprite\sprites\scoring_background.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
   </sodipodi:namedview>
   <defs
      id="defs1">
@@ -345,6 +357,18 @@
          cy="16.933332"
          r="16.933332"
          inkscape:label="texture" />
+    </g>
+    <g
+       id="g8-1"
+       inkscape:label="scoring_background"
+       transform="translate(-44.151726)">
+      <circle
+         style="fill:#ffffff;fill-opacity:1;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round"
+         id="circle2"
+         cx="16.933332"
+         cy="16.933332"
+         r="16.933332"
+         inkscape:label="bg" />
     </g>
     <use
        x="0"

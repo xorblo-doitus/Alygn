@@ -28,3 +28,4 @@ size_flags_vertical = 3
 [node name="Lines" type="Node2D" parent="."]
 
 [connection signal="matches_changed" from="VBoxContainer/Grid" to="." method="_on_grid_matches_changed"]
+[connection signal="state_changed" from="VBoxContainer/Grid" to="." method="_on_grid_state_changed"]

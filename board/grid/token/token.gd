@@ -28,8 +28,9 @@ var active_type: Type = Type.NULL:
 		active_type_changed.emit()
 
 
-func _init(i_type: Type = type) -> void:
+func _init(i_type: Type = type, i_active_type: Type = active_type) -> void:
 	type = i_type
+	active_type = i_active_type
 
 
 func randomize_type() -> void:

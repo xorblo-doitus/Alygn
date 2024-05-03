@@ -14,3 +14,10 @@ func _on_grid_matches_changed(matches: Array[TokenLine]) -> void:
 		lines.add_child(new_line_sprite)
 		new_line_sprite.set_visuals(line, grid)
 		new_line_sprite.width = grid.token_size.x + 4
+
+
+func _on_grid_state_changed() -> void:
+	pass
+	#if grid._state == Grid.State.SCORING:
+		#for child in lines.get_children():
+			#child.queue_free()

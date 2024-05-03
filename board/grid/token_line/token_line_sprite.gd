@@ -11,6 +11,8 @@ func _init() -> void:
 func set_visuals(token_line: TokenLine, grid: Grid) -> void:
 	clear_points()
 	
+	token_line.scored.connect(queue_free)
+	
 	for index in token_line.index:
 		add_point(to_local(grid.get_token_sprite(index).get_global_center()))
 	

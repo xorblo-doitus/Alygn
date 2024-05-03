@@ -2,6 +2,9 @@ class_name TokenLine
 extends RefCounted
 
 
+signal scored
+
+
 var index: Array[int] = []
 var type: Token.Type = Token.Type.NULL
 
