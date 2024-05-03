@@ -158,7 +158,7 @@ func scores() -> void:
 		_player_deck.push_back(token_sprite.token)
 		token_sprite.fall()
 		await get_tree().create_timer(0.1).timeout
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().create_timer(0.8).timeout
 	
 	_state = State.NONE
 	refill(activated_tokens, _player_deck)

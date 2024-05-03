@@ -84,17 +84,26 @@ func fall() -> void:
 	z_index = 1
 	create_tween().tween_property(
 		visual,
-		"global_position:y",
-		get_viewport_rect().end.y,
-		0.5
-	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+		"position:y",
+		-128,
+		0.25
+	).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD).finished.connect(_second_fall_tween.bind(visual.global_position.y + get_viewport_rect().size.y))
 	
 	create_tween().tween_property(
 		visual,
 		"global_position:x",
-		visual.global_position.x + randf_range(-256, 256),
+		visual.global_position.x + randf_range(16, 256) * (1 if randf() < 0.5 else -1),
+		0.8
+	).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+
+
+func _second_fall_tween(y: float) -> void:
+	create_tween().tween_property(
+		visual,
+		"global_position:y",
+		y,
 		0.5
-	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUINT)
+	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 
 
 func refill() -> void:
