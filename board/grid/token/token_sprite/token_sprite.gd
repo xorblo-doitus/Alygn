@@ -71,8 +71,6 @@ func scores(to: Vector2, type: Token.Type, tween_duration: float = 0.5) -> void:
 	scoring_sprite.background.modulate = Token.get_color(type)
 	scoring_sprite.background.modulate.a /= 4.0
 	scoring_sprite.z_index += 2
-	@warning_ignore("int_as_enum_without_cast")
-	token.active_type -= (type & token.active_type)
 	
 	create_tween().tween_property(
 		scoring_sprite,

@@ -133,11 +133,13 @@ func scores() -> void:
 	
 	_state = State.SCORING
 	
-	#var token_activation_count: Dictionary = {}
-	#for token_line in _matches_cache:
-		#for index in token_line.index:
-			#var token_sprite: TokenSprite = get_token_sprite(index)
-			#token_activation_count[token_sprite] = token_activation_count.get(token_sprite, 0) + 1
+	var token_activation_count: Dictionary = {}
+	for token_line in _matches_cache:
+		for index in token_line.index:
+			var token_sprite: TokenSprite = get_token_sprite(index)
+			if not token_activation_count.has(token_sprite):
+				token_activation_count[token_sprite] = TokenTypeCumulative.new()
+			token_activation_count[token_sprite].add(token_line.type)
 	
 	var activated_tokens: Array[TokenSprite] = []
 	for token_line in _matches_cache:
@@ -147,6 +149,8 @@ func scores() -> void:
 			if token_sprite not in activated_tokens:
 				activated_tokens.push_back(token_sprite)
 			token_sprite.scores(Vector2(860, 330), token_line.type)
+			token_activation_count[token_sprite].remove(token_line.type)
+			token_sprite.token.active_type = token_activation_count[token_sprite].get_type()
 			await get_tree().create_timer(0.1).timeout
 		await get_tree().create_timer(0.5).timeout
 	

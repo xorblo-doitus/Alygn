@@ -13,8 +13,9 @@ enum Type {
 	WATER = 1 << 1,
 	FIRE = 1 << 2,
 	HEAL = 1 << 3,
-	ANY = (1 << 4) - 1,
+	ANY = (1 << MAX_TYPE_INDEX) - 1,
 }
+const MAX_TYPE_INDEX: int = 4
 
 
 var type: Type = Type.NULL:
