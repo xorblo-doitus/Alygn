@@ -8,13 +8,13 @@ func _init() -> void:
 		width_curve = load("res://board/grid/token_line/debug_width.tres")
 
 
-func set_visuals(token_line: TokenLine, grid: Grid) -> void:
+func set_visuals(token_line: TokenLine) -> void:
 	clear_points()
 	
 	token_line.scored.connect(queue_free)
 	
-	for index in token_line.index:
-		add_point(to_local(grid.get_token_sprite(index).get_global_center()))
+	for token_sprite in token_line.token_sprites:
+		add_point(to_local(token_sprite.get_global_center()))
 	
 	default_color = Token.get_color(token_line.type)
 	default_color.a /= 5.0

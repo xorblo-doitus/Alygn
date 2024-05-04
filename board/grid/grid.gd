@@ -95,13 +95,13 @@ func _build_sprites() -> void:
 	for x in columns:
 		for y in rows:
 			var new_token_sprite: TokenSprite = preload("res://board/grid/token/token_sprite/token_sprite.tscn").instantiate()
-			new_token_sprite.token = Token.new()
 			#new_token_sprite.token.randomize_type()
 			new_token_sprite.custom_minimum_size = token_size
 			new_token_sprite.reset_size()
 			new_token_sprite.clicked.connect(_on_token_sprite_clicked.bind(new_token_sprite))
 			new_token_sprite.type_changed.connect(check)
 			add_child(new_token_sprite)
+			new_token_sprite.token = Token.new()
 
 
 
@@ -135,8 +135,8 @@ func scores() -> void:
 	
 	var token_activation_count: Dictionary = {}
 	for token_line in _matches_cache:
-		for index in token_line.index:
-			var token_sprite: TokenSprite = get_token_sprite(index)
+		for token_sprite in token_line.token_sprites:
+			#var token_sprite: TokenSprite = get_token_sprite(index)
 			if not token_activation_count.has(token_sprite):
 				token_activation_count[token_sprite] = TokenTypeCumulative.new()
 			token_activation_count[token_sprite].add(token_line.type)
@@ -144,8 +144,8 @@ func scores() -> void:
 	var activated_tokens: Array[TokenSprite] = []
 	for token_line in _matches_cache:
 		token_line.scored.emit()
-		for index in token_line.index:
-			var token_sprite: TokenSprite = get_token_sprite(index)
+		for token_sprite in token_line.token_sprites:
+			#var token_sprite: TokenSprite = get_token_sprite(index)
 			if token_sprite not in activated_tokens:
 				activated_tokens.push_back(token_sprite)
 			token_sprite.scores(Vector2(860, 330), token_line.type)
@@ -164,16 +164,22 @@ func scores() -> void:
 	refill(activated_tokens, _player_deck)
 
 
+var refills_without_ghost: int = 3
+var _consecutive_refills: int = 0
 func refill(sprites: Array[TokenSprite], deck: Array[Token]) -> void:
 	if _state != State.NONE and _state != State.DRAGGABLE:
 		return
 	
 	_state = State.FILLING
+	_consecutive_refills += 1
 	
+	if _consecutive_refills > refills_without_ghost:
+		for i in min(deck.size() - 1, (_consecutive_refills - refills_without_ghost) ** 2):
+			deck[i].temporary_ghostly = true
 	deck.shuffle()
+	
 	for sprite in sprites:
 		sprite.token = deck.pop_back()
-		sprite.adapt_visual_to_type()
 		sprite.refill()
 		await get_tree().create_timer(0.1).timeout
 	await get_tree().create_timer(0.6).timeout
@@ -183,6 +189,8 @@ func refill(sprites: Array[TokenSprite], deck: Array[Token]) -> void:
 	
 	if _matches_cache:
 		scores()
+	else:
+		_consecutive_refills = 0
 	
 
 
@@ -268,12 +276,22 @@ func update_tokens_active_types(matches: Array[TokenLine]) -> void:
 	active_types.resize(columns * rows)
 	
 	for match_ in matches:
-		for index in match_.index:
+		for token_sprite in match_.token_sprites:
 			@warning_ignore("int_as_enum_without_cast")
-			active_types[index] |= match_.type
+			active_types[token_sprite.get_index()] |= match_.type
 	
 	for index in active_types.size():
 		get_token_sprite(index).token.active_type = active_types[index]
+	#var active_types: Array[Token.Type] = []
+	#active_types.resize(columns * rows)
+	#
+	#for match_ in matches:
+		#for index in match_.index:
+			#@warning_ignore("int_as_enum_without_cast")
+			#active_types[index] |= match_.type
+	#
+	#for index in active_types.size():
+		#get_token_sprite(index).token.active_type = active_types[index]
 
 
 func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_alignement) -> Array[TokenLine]:
@@ -283,7 +301,7 @@ func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_aligne
 	
 	for i_master in len(to_check) - minimum_lenght + 1:
 		while available_types[i_master]:
-			var line: TokenLine = TokenLine.new([to_check[i_master]], available_types[i_master])
+			var line: TokenLine = TokenLine.new([get_token_sprite(to_check[i_master])], available_types[i_master])
 			
 			for i in range(i_master + 1, len(to_check)):
 				var index = to_check[i]
@@ -292,15 +310,15 @@ func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_aligne
 				if line.type & type:
 					@warning_ignore("int_as_enum_without_cast")
 					line.type &= type
-					line.index.push_back(index)
+					line.token_sprites.push_back(get_token_sprite(index))
 				else:
 					break
 			
-			for i_to_use in range(i_master, i_master + line.index.size()):
+			for i_to_use in range(i_master, i_master + line.token_sprites.size()):
 				@warning_ignore("int_as_enum_without_cast")
 				available_types[i_to_use] -= line.type
 			
-			if line.index.size() >= minimum_lenght:
+			if line.get_alignement_len() >= minimum_lenght:
 				result.push_back(line)
 	
 	return result
@@ -310,8 +328,8 @@ func _index_to_type(index: int) -> Token.Type:
 	return get_token_sprite(index).token.type
 
 
-func _long_enough(token_line: TokenLine, minimum_lenght: int) -> bool:
-	return token_line.index.size() >= minimum_lenght
+#func _long_enough(token_line: TokenLine, minimum_lenght: int) -> bool:
+	#return token_line.index.size() >= minimum_lenght
 
 
 func _generate_grid_without_alignement(deck: Array[Token], minimum_lenght: int = minimum_token_alignement) -> Array[Token]:
@@ -324,30 +342,62 @@ func _generate_grid_without_alignement(deck: Array[Token], minimum_lenght: int =
 			result.append(_pop_deck(deck))
 			while _is_aligned_with_up_left(result, Vector2i(x, y), minimum_lenght):
 				discarded.push_back(result.pop_back())
-				result.append(_pop_deck(deck))
+				if deck:
+					result.append(_pop_deck(deck))
+				else:
+					result.push_back(discarded.pop_back().temporary_ghosted())
 			deck.append_array(discarded)
 	
 	return result
 
 
 func _is_aligned_with_up_left(grid: Array[Token], coord: Vector2i, minimum_lenght: int) -> bool:
+	#var base_token: Token.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))]
+	#var base_type: Token.Type = base_token.type
+	
 	# Horizontal
-	if coord.x >= minimum_lenght - 1:
-		var type: Token.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))].type
-		for x in range(coord.x - minimum_lenght + 1, coord.x):
-			@warning_ignore("int_as_enum_without_cast")
-			type &= grid[coord_to_index(Vector2i(x, coord.y))].type
-		if type:
+	var type: Token.Type = Token.Type.ANY
+	var x: int = coord.x
+	var left_to_match: int = minimum_lenght
+	
+	while x >= 0:
+		var token: Token = grid[coord_to_index(Vector2i(x, coord.y))]
+		
+		@warning_ignore("int_as_enum_without_cast")
+		type &= token.type
+		
+		if not type:
+			break
+		
+		if not token.is_ghostly():
+			left_to_match -= 1
+		
+		if left_to_match == 0:
 			return true
+		
+		x -= 1
 	
 	# Vertical
-	if coord.y >= minimum_lenght - 1:
-		var type: Token.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))].type
-		for y in range(coord.y - minimum_lenght + 1, coord.y):
-			@warning_ignore("int_as_enum_without_cast")
-			type &= grid[coord_to_index(Vector2i(coord.x, y))].type
-		if type:
+	type = Token.Type.ANY
+	var y: int = coord.y
+	left_to_match = minimum_lenght
+	
+	while y >= 0:
+		var token: Token = grid[coord_to_index(Vector2i(coord.x, y))]
+		
+		@warning_ignore("int_as_enum_without_cast")
+		type &= token.type
+		
+		if not type:
+			break
+		
+		if not token.is_ghostly():
+			left_to_match -= 1
+		
+		if left_to_match == 0:
 			return true
+		
+		y -= 1
 	
 	return false
 

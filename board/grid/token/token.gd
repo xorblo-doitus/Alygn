@@ -3,6 +3,7 @@ extends RefCounted
 
 
 signal type_changed
+signal ghostly_changed
 signal active_type_changed
 
 
@@ -22,6 +23,18 @@ var type: Type = Type.NULL:
 	set(new):
 		type = new
 		type_changed.emit()
+
+var permanently_ghostly: bool = false:
+	set(new):
+		permanently_ghostly = new
+		ghostly_changed.emit()
+var temporary_ghostly: bool = false:
+	set(new):
+		temporary_ghostly = new
+		ghostly_changed.emit()
+func is_ghostly() -> bool:
+	return permanently_ghostly or temporary_ghostly
+
 
 var active_type: Type = Type.NULL:
 	set(new):
@@ -70,3 +83,9 @@ static func get_color(for_type: Type) -> Color:
 		result += Color(1, 0.5, 0.5, 0)
 	
 	return result
+
+
+## returns self and set [member temporary_ghostly] to true.
+func temporary_ghosted() -> Token:
+	temporary_ghostly = true
+	return self

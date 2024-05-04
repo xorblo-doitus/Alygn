@@ -27,10 +27,15 @@ var token: Token:
 		if token:
 			token.type_changed.disconnect(_on_token_type_changed)
 			token.active_type_changed.disconnect(adapt_visual_to_type)
+			token.ghostly_changed.disconnect(adapt_visual_to_ghostly)
 		token = new
 		if token:
 			token.type_changed.connect(_on_token_type_changed)
 			token.active_type_changed.connect(adapt_visual_to_type)
+			token.ghostly_changed.connect(adapt_visual_to_ghostly)
+		
+		adapt_visual_to_type()
+		adapt_visual_to_ghostly()
 
 
 var dragged: bool:
@@ -49,6 +54,7 @@ var dragged: bool:
 
 func _ready() -> void:
 	adapt_visual_to_type()
+	adapt_visual_to_ghostly()
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -103,7 +109,11 @@ func _second_fall_tween(y: float) -> void:
 		"global_position:y",
 		y,
 		0.5
-	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD).finished.connect(_on_fall_finished)
+
+
+func _on_fall_finished() -> void:
+	token.temporary_ghostly = false
 
 
 func refill() -> void:
@@ -131,12 +141,12 @@ func get_global_center() -> Vector2:
 	return get_global_rect().get_center()
 
 
-func adapt_visual_to_type(
-	for_type: Token.Type = token.type,
-	for_active_types: Token.Type = token.active_type
-) -> void:
+func adapt_visual_to_type() -> void:
 	if not is_node_ready():
 		return
+	
+	var for_type: Token.Type = token.type if token else Token.Type.NULL
+	var for_active_types: Token.Type = token.active_type if token else Token.Type.NULL
 	
 	for child in elements.get_children():
 		child.queue_free()
@@ -155,7 +165,18 @@ func adapt_visual_to_type(
 					for_active_types,
 					COMBINING_TEXTURE_FOR_TYPE[available_type],
 				))
-		
+
+
+func adapt_visual_to_ghostly() -> void:
+	if not is_node_ready():
+		return
+	
+	var ghostly: bool = token.is_ghostly() if token else false
+	if ghostly:
+		visual.modulate.a = 0.2
+	else:
+		visual.modulate.a = 1.0
+
 
 func _on_token_type_changed() -> void:
 	adapt_visual_to_type()
