@@ -7,16 +7,16 @@ signal scored
 
 var token_sprites: Array[TokenSprite] = []
 #var index: Array[int] = []
-var type: Token.Type = Token.Type.NULL
+var type: Element.Type = Element.Type.NULL
 
 
-func _init(i_token_sprites: Array[TokenSprite] = token_sprites, i_type: Token.Type = Token.Type.NULL) -> void:
+func _init(i_token_sprites: Array[TokenSprite] = token_sprites, i_type: Element.Type = Element.Type.NULL) -> void:
 	token_sprites = i_token_sprites
 	type = i_type
 
 
 func _to_string() -> String:
-	return "TokenLine(%s)[%s]" % [Token.Type.find_key(type), get_indexes()]
+	return "TokenLine(%s)[%s]" % [Element.Type.find_key(type), get_indexes()]
 
 
 func get_indexes() -> Array[int]:

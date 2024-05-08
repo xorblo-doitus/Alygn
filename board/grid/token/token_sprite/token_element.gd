@@ -5,12 +5,12 @@ extends TextureRect
 const disabled_darknest: float = 0.7
 
 
-func setup(type: Token.Type, active_types: Token.Type, p_texture: Texture2D) -> TokenElement:
+func setup(type: Element.Type, active_types: Element.Type, p_texture: Texture2D) -> TokenElement:
 	texture = p_texture
 	
 	if active_types & type:
-		modulate = Token.get_color(type)
+		modulate = Element.get_color(type)
 	else:
-		modulate = Token.get_color(type).darkened(disabled_darknest)
+		modulate = Element.get_color(type).darkened(disabled_darknest)
 	
 	return self

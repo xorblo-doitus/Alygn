@@ -272,7 +272,7 @@ func check() -> void:
 
 
 func update_tokens_active_types(matches: Array[TokenLine]) -> void:
-	var active_types: Array[Token.Type] = []
+	var active_types: Array[Element.Type] = []
 	active_types.resize(columns * rows)
 	
 	for match_ in matches:
@@ -282,7 +282,7 @@ func update_tokens_active_types(matches: Array[TokenLine]) -> void:
 	
 	for index in active_types.size():
 		get_token_sprite(index).token.active_type = active_types[index]
-	#var active_types: Array[Token.Type] = []
+	#var active_types: Array[Element.Type] = []
 	#active_types.resize(columns * rows)
 	#
 	#for match_ in matches:
@@ -296,7 +296,7 @@ func update_tokens_active_types(matches: Array[TokenLine]) -> void:
 
 func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_alignement) -> Array[TokenLine]:
 	var result: Array[TokenLine] = []
-	var available_types: Array[Token.Type] = []
+	var available_types: Array[Element.Type] = []
 	available_types.append_array(to_check.map(_index_to_type))
 	
 	for i_master in len(to_check) - minimum_lenght + 1:
@@ -305,7 +305,7 @@ func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_aligne
 			
 			for i in range(i_master + 1, len(to_check)):
 				var index = to_check[i]
-				var type: Token.Type = available_types[i]
+				var type: Element.Type = available_types[i]
 				
 				if line.type & type:
 					@warning_ignore("int_as_enum_without_cast")
@@ -324,7 +324,7 @@ func check_line(to_check: Array[int], minimum_lenght: int = minimum_token_aligne
 	return result
 
 
-func _index_to_type(index: int) -> Token.Type:
+func _index_to_type(index: int) -> Element.Type:
 	return get_token_sprite(index).token.type
 
 
@@ -352,11 +352,11 @@ func _generate_grid_without_alignement(deck: Array[Token], minimum_lenght: int =
 
 
 func _is_aligned_with_up_left(grid: Array[Token], coord: Vector2i, minimum_lenght: int) -> bool:
-	#var base_token: Token.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))]
-	#var base_type: Token.Type = base_token.type
+	#var base_token: Element.Type = grid[coord_to_index(Vector2i(coord.x, coord.y))]
+	#var base_type: Element.Type = base_token.type
 	
 	# Horizontal
-	var type: Token.Type = Token.Type.ANY
+	var type: Element.Type = Element.Type.ANY
 	var x: int = coord.x
 	var left_to_match: int = minimum_lenght
 	
@@ -378,7 +378,7 @@ func _is_aligned_with_up_left(grid: Array[Token], coord: Vector2i, minimum_lengh
 		x -= 1
 	
 	# Vertical
-	type = Token.Type.ANY
+	type = Element.Type.ANY
 	var y: int = coord.y
 	left_to_match = minimum_lenght
 	
@@ -404,7 +404,7 @@ func _is_aligned_with_up_left(grid: Array[Token], coord: Vector2i, minimum_lengh
 #func _is_aligned(grid: Array[Token], coord: Vector2i, minimum_lenght: int) -> bool:
 	## Horizontal
 	#for master_x in range(max(0, coord.x - minimum_lenght + 1), min(columns - minimum_lenght, coord.x + 1)):
-		#var type: Token.Type = grid[coord_to_index(Vector2i(master_x, coord.y))].type
+		#var type: Element.Type = grid[coord_to_index(Vector2i(master_x, coord.y))].type
 		#for x in range(master_x + 1, master_x + minimum_lenght):
 			#type &= grid[coord_to_index(Vector2i(x, coord.y))].type
 		#if type:
@@ -412,7 +412,7 @@ func _is_aligned_with_up_left(grid: Array[Token], coord: Vector2i, minimum_lengh
 	#
 	## Vertical
 	#for master_y in range(max(0, coord.y - minimum_lenght + 1), min(rows - minimum_lenght, coord.y + 1)):
-		#var type: Token.Type = grid[coord_to_index(Vector2i(coord.x, master_y))].type
+		#var type: Element.Type = grid[coord_to_index(Vector2i(coord.x, master_y))].type
 		#for y in range(master_y + 1, master_y + minimum_lenght):
 			#type &= grid[coord_to_index(Vector2i(coord.x, y))].type
 		#if type:
@@ -436,13 +436,13 @@ static func _get_default_deck() -> Array[Token]:
 	var result: Array[Token] = []
 	
 	for __ in 10:
-		result.push_back(Token.new(Token.Type.PLANT))
-		result.push_back(Token.new(Token.Type.WATER))
-		result.push_back(Token.new(Token.Type.FIRE))
+		result.push_back(Token.new(Element.Type.PLANT))
+		result.push_back(Token.new(Element.Type.WATER))
+		result.push_back(Token.new(Element.Type.FIRE))
 	
 	for __ in 4:
-		result.push_back(Token.new(Token.Type.HEAL))
+		result.push_back(Token.new(Element.Type.HEAL))
 		
-	result.push_back(Token.new(Token.Type.ANY))
+	result.push_back(Token.new(Element.Type.ANY))
 	
 	return result

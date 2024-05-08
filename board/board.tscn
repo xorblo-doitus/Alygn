@@ -24,6 +24,9 @@ grow_vertical = 2
 [node name="Grid" parent="VBoxContainer" instance=ExtResource("2_1dlc2")]
 layout_mode = 2
 size_flags_vertical = 3
+rows = null
+token_size = null
+minimum_token_alignement = null
 
 [node name="Lines" type="Node2D" parent="."]
 

@@ -7,18 +7,18 @@ signal type_changed
 
 
 const TEXTURE_FOR_TYPE = {
-	Token.Type.NULL: null,
-	Token.Type.PLANT: preload("res://board/grid/token/token_sprite/sprites/plant.png"),
-	Token.Type.WATER: preload("res://board/grid/token/token_sprite/sprites/water.png"),
-	Token.Type.FIRE: preload("res://board/grid/token/token_sprite/sprites/fire.png"),
-	Token.Type.HEAL: preload("res://board/grid/token/token_sprite/sprites/heal.png"),
+	Element.Type.NULL: null,
+	Element.Type.PLANT: preload("res://board/grid/token/token_sprite/sprites/plant.png"),
+	Element.Type.WATER: preload("res://board/grid/token/token_sprite/sprites/water.png"),
+	Element.Type.FIRE: preload("res://board/grid/token/token_sprite/sprites/fire.png"),
+	Element.Type.HEAL: preload("res://board/grid/token/token_sprite/sprites/heal.png"),
 }
 const COMBINING_TEXTURE_FOR_TYPE = {
-	Token.Type.NULL: null,
-	Token.Type.PLANT: preload("res://board/grid/token/token_sprite/sprites/combining_plant.png"),
-	Token.Type.WATER: preload("res://board/grid/token/token_sprite/sprites/combining_water.png"),
-	Token.Type.FIRE: preload("res://board/grid/token/token_sprite/sprites/combining_fire.png"),
-	Token.Type.HEAL: preload("res://board/grid/token/token_sprite/sprites/combining_heal.png"),
+	Element.Type.NULL: null,
+	Element.Type.PLANT: preload("res://board/grid/token/token_sprite/sprites/combining_plant.png"),
+	Element.Type.WATER: preload("res://board/grid/token/token_sprite/sprites/combining_water.png"),
+	Element.Type.FIRE: preload("res://board/grid/token/token_sprite/sprites/combining_fire.png"),
+	Element.Type.HEAL: preload("res://board/grid/token/token_sprite/sprites/combining_heal.png"),
 }
 
 
@@ -69,12 +69,12 @@ func set_visual_screen_position(screen_position: Vector2) -> void:
 	visual.global_position = screen_position
 
 
-func scores(to: Vector2, type: Token.Type, tween_duration: float = 0.5) -> void:
+func scores(to: Vector2, type: Element.Type, tween_duration: float = 0.5) -> void:
 	var scoring_sprite: TokenSprite = preload("res://board/grid/token/token_sprite/token_sprite.tscn").instantiate()
 	scoring_sprite.token = Token.new(type, type)
 	scoring.add_child(scoring_sprite)
 	scoring_sprite.background.texture = preload("res://board/grid/token/token_sprite/sprites/scoring_background.png")
-	scoring_sprite.background.modulate = Token.get_color(type)
+	scoring_sprite.background.modulate = Element.get_color(type)
 	scoring_sprite.background.modulate.a /= 4.0
 	scoring_sprite.z_index += 2
 	
@@ -145,8 +145,8 @@ func adapt_visual_to_type() -> void:
 	if not is_node_ready():
 		return
 	
-	var for_type: Token.Type = token.type if token else Token.Type.NULL
-	var for_active_types: Token.Type = token.active_type if token else Token.Type.NULL
+	var for_type: Element.Type = token.type if token else Element.Type.NULL
+	var for_active_types: Element.Type = token.active_type if token else Element.Type.NULL
 	
 	for child in elements.get_children():
 		child.queue_free()

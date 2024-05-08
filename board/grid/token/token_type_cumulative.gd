@@ -7,11 +7,11 @@ var _fields: Array[int] = []
 
 
 func _init() -> void:
-	_fields.resize(Token.MAX_TYPE_INDEX + 1)
+	_fields.resize(Element.MAX_TYPE_INDEX + 1)
 
 
 ## masked += mask
-func add(type: Token.Type) -> void:
+func add(type: Element.Type) -> void:
 	var index: int = 0
 	while type:
 		_fields[index] += type%2
@@ -21,7 +21,7 @@ func add(type: Token.Type) -> void:
 
 
 ## masked -= mask
-func remove(type: Token.Type) -> void:
+func remove(type: Element.Type) -> void:
 	var index: int = 0
 	while type:
 		_fields[index] -= type%2
@@ -31,7 +31,7 @@ func remove(type: Token.Type) -> void:
 
 
 ## masked -= masked & mask
-func remove_if_enabled(type: Token.Type) -> void:
+func remove_if_enabled(type: Element.Type) -> void:
 	var index: int = 0
 	while type:
 		_fields[index] = max(0, _fields[index] - type%2)
@@ -40,9 +40,9 @@ func remove_if_enabled(type: Token.Type) -> void:
 		type >>= 1
 
 
-func get_type() -> Token.Type:
+func get_type() -> Element.Type:
 	@warning_ignore("int_as_enum_without_cast")
-	var type: Token.Type = 0
+	var type: Element.Type = 0
 	for index in _fields.size():
 		if _fields[index]:
 			@warning_ignore("int_as_enum_without_cast")

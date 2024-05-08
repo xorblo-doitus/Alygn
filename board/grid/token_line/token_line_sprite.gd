@@ -16,6 +16,6 @@ func set_visuals(token_line: TokenLine) -> void:
 	for token_sprite in token_line.token_sprites:
 		add_point(to_local(token_sprite.get_global_center()))
 	
-	default_color = Token.get_color(token_line.type)
+	default_color = Element.get_color(token_line.type)
 	default_color.a /= 5.0
 	#hide()
