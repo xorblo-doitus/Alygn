@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://2rcqv6b312p6"]
+
+[ext_resource type="Script" path="res://elemonster/elemonster_sprite.gd" id="1_ktpf2"]
+[ext_resource type="Texture2D" uid="uid://s8c1te6lnxg" path="res://elemonster/shadows/circle.svg" id="2_c5oyn"]
+[ext_resource type="Texture2D" uid="uid://b4pa5shn6ohxp" path="res://elemonster/sprites/bush.png" id="3_i6nhs"]
+
+[node name="ElemonsterSprite" type="Node2D"]
+script = ExtResource("1_ktpf2")
+
+[node name="Shadow" type="Marker2D" parent="."]
+
+[node name="ShadowSprite" type="Sprite2D" parent="Shadow"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(1, 0.4)
+texture = ExtResource("2_c5oyn")
+
+[node name="Monster" type="Marker2D" parent="."]
+
+[node name="MonsterSprite" type="Sprite2D" parent="Monster"]
+texture = ExtResource("3_i6nhs")
