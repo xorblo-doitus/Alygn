@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0y6vm7fc3sn4"]
+
+[ext_resource type="PackedScene" uid="uid://2rcqv6b312p6" path="res://room/elemonster/elemonster_sprite.tscn" id="1_xhxcl"]
+[ext_resource type="Resource" uid="uid://bw50hlworwspi" path="res://room/elemonster/elemonster_resources/wisp.tres" id="2_selx1"]
+
+[sub_resource type="GDScript" id="GDScript_21rtn"]
+script/source = "@tool
+extends ElemonsterSprite
+
+
+func _process(delta: float) -> void:
+	if elemonster_resource:
+		update_elemonster_resource()
+"
+
+[node name="ElemonsterResourcePreviewer" type="Node2D"]
+
+[node name="ElemonsterSprite" parent="." instance=ExtResource("1_xhxcl")]
+script = SubResource("GDScript_21rtn")
+elemonster_resource = ExtResource("2_selx1")
