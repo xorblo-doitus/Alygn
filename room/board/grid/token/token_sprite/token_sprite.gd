@@ -85,7 +85,7 @@ func scores(to: Vector2, type: Element.Type, tween_duration: float = 0.5) -> voi
 	create_tween().tween_property(
 		scoring_sprite,
 		"global_position",
-		to,
+		to - size/2,
 		tween_duration
 	).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK).finished.connect(scoring_sprite.queue_free)
 

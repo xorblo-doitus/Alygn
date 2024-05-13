@@ -4,6 +4,7 @@ extends GridContainer
 
 signal state_changed()
 signal matches_changed(matches: Array[TokenLine])
+signal scored(token: TokenSprite, type: Element.Type)
 
 
 enum State {
@@ -148,7 +149,8 @@ func scores() -> void:
 			#var token_sprite: TokenSprite = get_token_sprite(index)
 			if token_sprite not in activated_tokens:
 				activated_tokens.push_back(token_sprite)
-			token_sprite.scores(Vector2(860, 330), token_line.type)
+			scored.emit(token_sprite, token_line.type)
+			#token_sprite.scores(Vector2(860, 330), token_line.type)
 			token_activation_count[token_sprite].remove(token_line.type)
 			token_sprite.token.active_type = token_activation_count[token_sprite].get_type()
 			await get_tree().create_timer(0.1).timeout

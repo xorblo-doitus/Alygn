@@ -36,3 +36,7 @@ func update_sprite() -> void:
 	
 	monster_sprite.texture = elemonster_resource.sprite_texture
 	monster_sprite.position.y = 16 - elemonster_resource.sprite_texture.get_size().y/2.0
+
+
+func get_global_token_target() -> Vector2:
+	return monster_sprite.global_position #+ monster_sprite.get_rect().size / 2.0

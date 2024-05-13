@@ -10,3 +10,4 @@ sprite_texture = ExtResource("3_oxihg")
 shadow_color = Color(0.992157, 0.415686, 0, 1)
 shadow_size = Vector2(0.25, 0.1)
 shadow_texture = ExtResource("2_2rmn2")
+type = 4

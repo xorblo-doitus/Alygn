@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://bknkxnfuo75m5"]
+
+[ext_resource type="PackedScene" uid="uid://dyy06o6cq2m8l" path="res://room/board/board.tscn" id="1_gg3mr"]
+[ext_resource type="Script" path="res://room/room.gd" id="1_qhp4e"]
+[ext_resource type="PackedScene" uid="uid://2rcqv6b312p6" path="res://room/elemonster/elemonster_sprite.tscn" id="1_qm8ub"]
+[ext_resource type="Resource" uid="uid://cl7hvpw5jvrih" path="res://room/elemonster/elemonster_resources/bush.tres" id="2_6b8by"]
+[ext_resource type="Resource" uid="uid://bw50hlworwspi" path="res://room/elemonster/elemonster_resources/wisp.tres" id="3_a3w5r"]
+[ext_resource type="Resource" uid="uid://ckj6v1xthneur" path="res://room/elemonster/elemonster_resources/ogwater.tres" id="4_to0y8"]
+
+[node name="Room" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_qhp4e")
+
+[node name="ElemonstersLeft" type="Node2D" parent="."]
+
+[node name="ElemonsterSprite" parent="ElemonstersLeft" instance=ExtResource("1_qm8ub")]
+position = Vector2(148, 136)
+elemonster_resource = ExtResource("2_6b8by")
+
+[node name="ElemonsterSprite2" parent="ElemonstersLeft" instance=ExtResource("1_qm8ub")]
+position = Vector2(154, 324)
+elemonster_resource = ExtResource("3_a3w5r")
+
+[node name="ElemonsterSprite3" parent="ElemonstersLeft" instance=ExtResource("1_qm8ub")]
+position = Vector2(147, 530)
+elemonster_resource = ExtResource("4_to0y8")
+
+[node name="Board" parent="." instance=ExtResource("1_gg3mr")]
+layout_mode = 1
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -20.0
+offset_bottom = -20.0
