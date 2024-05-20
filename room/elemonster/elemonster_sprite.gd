@@ -7,9 +7,16 @@ extends Node2D
 		elemonster_resource = new
 		update_elemonster_resource()
 
+var monster_height: float = 0.0:
+	set(new):
+		monster_height = new
+		_on_height_changed()
+
 
 @onready var shadow_sprite: Sprite2D = $Shadow/ShadowSprite
 @onready var monster_sprite: Sprite2D = $Monster/MonsterSprite
+@onready var shadow: Marker2D = $Shadow
+@onready var monster: Marker2D = $Monster
 
 
 func _ready() -> void:
@@ -40,3 +47,11 @@ func update_sprite() -> void:
 
 func get_global_token_target() -> Vector2:
 	return monster_sprite.global_position #+ monster_sprite.get_rect().size / 2.0
+
+
+func _on_height_changed() -> void:
+	if not is_node_ready():
+		return
+	
+	monster.position.y = -monster_height
+	shadow.scale = Vector2(1.0 - monster_height/50.0, 1.0 - monster_height/50.0)
