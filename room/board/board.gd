@@ -1,9 +1,9 @@
 class_name Board
-extends Control
+extends PanelContainer
 
 
-@onready var lines: Node2D = $Lines
-@onready var grid: Grid = $VBoxContainer/Grid
+@onready var lines: Node2D = %Lines
+@onready var grid: Grid = %Grid
 
 
 func _on_grid_matches_changed(matches: Array[TokenLine]) -> void:
