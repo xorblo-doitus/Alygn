@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://dudx8bxdmsd2f"]
+[gd_scene load_steps=11 format=3 uid="uid://dudx8bxdmsd2f"]
 
 [ext_resource type="Script" path="res://room/board/grid/token/token_sprite/token_sprite.gd" id="1_qc7nl"]
 [ext_resource type="Texture2D" uid="uid://bsklq884cgsb1" path="res://room/board/grid/token/token_sprite/sprites/background.png" id="2_cqptm"]
-[ext_resource type="PackedScene" uid="uid://c4p4q7g2qmp3d" path="res://room/board/grid/token/token_sprite/token_element.tscn" id="3_jmqrx"]
 [ext_resource type="AudioStream" uid="uid://dtl613rw3f6yp" path="res://room/board/grid/token/token_sprite/sfx/move-01.wav" id="4_gx408"]
 [ext_resource type="AudioStream" uid="uid://bh7qy54ehctcp" path="res://room/board/grid/token/token_sprite/sfx/move-02.wav" id="5_5lhdn"]
 [ext_resource type="AudioStream" uid="uid://domaprbgkpu6l" path="res://room/board/grid/token/token_sprite/sfx/move-03.wav" id="6_yr3ce"]
@@ -59,14 +58,6 @@ mouse_filter = 2
 texture = ExtResource("2_cqptm")
 expand_mode = 1
 stretch_mode = 5
-
-[node name="TokenElement" parent="Visual" instance=ExtResource("3_jmqrx")]
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
 
 [node name="Elements" type="Control" parent="Visual"]
 layout_mode = 1
