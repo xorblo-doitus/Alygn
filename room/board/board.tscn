@@ -48,6 +48,9 @@ size_flags_vertical = 4
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+rows = 5
+token_size = Vector2(128, 128)
+minimum_token_alignement = 3
 
 [node name="Lines" type="Node2D" parent="."]
 unique_name_in_owner = true

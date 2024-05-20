@@ -50,6 +50,7 @@ var dragged: bool:
 @onready var background: TextureRect = $Visual/Background
 @onready var elements: Control = $Visual/Elements
 @onready var scoring: Node = $Scoring
+@onready var move_sound: AudioStreamPlayer2D = $MoveSound
 
 
 static func instantiate() -> TokenSprite:
@@ -180,6 +181,10 @@ func adapt_visual_to_ghostly() -> void:
 		visual.modulate.a = 0.2
 	else:
 		visual.modulate.a = 1.0
+
+
+func play_move_sound() -> void:
+	move_sound.play()
 
 
 func _on_token_type_changed() -> void:

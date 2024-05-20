@@ -13,8 +13,5 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 5
 script = ExtResource("1_nhcxa")
-rows = null
-token_size = null
-minimum_token_alignement = null
 
 [connection signal="sort_children" from="." to="." method="_on_sort_children"]

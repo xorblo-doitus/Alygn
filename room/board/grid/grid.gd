@@ -74,6 +74,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					break
 				
 				swap(_currently_dragged, swap_with)
+				swap_with.play_move_sound()
 				
 				var to_remove: Vector2 = Vector2(
 					target.x * (token_size.x + get_theme_constant("h_separation")),
