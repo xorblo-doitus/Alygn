@@ -1,8 +1,75 @@
-[gd_scene load_steps=4 format=3 uid="uid://2rcqv6b312p6"]
+[gd_scene load_steps=8 format=3 uid="uid://2rcqv6b312p6"]
 
 [ext_resource type="Script" path="res://room/elemonster/elemonster_sprite.gd" id="1_ktpf2"]
 [ext_resource type="Texture2D" uid="uid://s8c1te6lnxg" path="res://room/elemonster/shadows/circle.svg" id="2_c5oyn"]
 [ext_resource type="Texture2D" uid="uid://b4pa5shn6ohxp" path="res://room/elemonster/sprites/bush.png" id="3_i6nhs"]
+
+[sub_resource type="Animation" id="Animation_l2ql1"]
+resource_name = "floating"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:monster_height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 10.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_py3gw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:monster_height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Monster:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fg2bd"]
+resource_name = "breath"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Monster:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 0.9)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0g1hf"]
+_data = {
+"RESET": SubResource("Animation_py3gw"),
+"breath": SubResource("Animation_fg2bd"),
+"floating": SubResource("Animation_l2ql1")
+}
 
 [node name="ElemonsterSprite" type="Node2D"]
 script = ExtResource("1_ktpf2")
@@ -18,3 +85,8 @@ texture = ExtResource("2_c5oyn")
 
 [node name="MonsterSprite" type="Sprite2D" parent="Monster"]
 texture = ExtResource("3_i6nhs")
+
+[node name="IdleAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0g1hf")
+}

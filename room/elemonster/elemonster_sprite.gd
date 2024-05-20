@@ -17,6 +17,7 @@ var monster_height: float = 0.0:
 @onready var monster_sprite: Sprite2D = $Monster/MonsterSprite
 @onready var shadow: Marker2D = $Shadow
 @onready var monster: Marker2D = $Monster
+@onready var idle_animation_player: AnimationPlayer = $IdleAnimationPlayer
 
 
 func _ready() -> void:
@@ -43,6 +44,8 @@ func update_sprite() -> void:
 	
 	monster_sprite.texture = elemonster_resource.sprite_texture
 	monster_sprite.position.y = 16 - elemonster_resource.sprite_texture.get_size().y/2.0
+	idle_animation_player.play(elemonster_resource.animation, -1, randf_range(0.8, 1.2))
+	idle_animation_player.advance(randf() * 10.0)
 
 
 func get_global_token_target() -> Vector2:
