@@ -8,6 +8,7 @@ var type: Element.Type
 
 @export_group("sprite")
 @export var sprite_texture: Texture2D = preload("uid://b4pa5shn6ohxp") #"res://room/elemonster/sprites/bush.png"
+@export var animation: StringName = &"breath"
 
 @export_group("shadow")
 @export var shadow_color: Color = Color.BLACK
@@ -18,7 +19,6 @@ var type: Element.Type
 
 var debounce: bool = false
 func _get_property_list() -> Array[Dictionary]:
-	print("a")
 	return [
 		{
 			"class_name": "ElemonsterResource", 
