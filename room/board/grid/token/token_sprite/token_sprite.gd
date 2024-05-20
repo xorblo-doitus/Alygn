@@ -178,9 +178,9 @@ func adapt_visual_to_ghostly() -> void:
 	
 	var ghostly: bool = token.is_ghostly() if token else false
 	if ghostly:
-		visual.modulate.a = 0.2
+		background.modulate.a = 0.4
 	else:
-		visual.modulate.a = 1.0
+		background.modulate.a = 1.0
 
 
 func play_move_sound() -> void:
