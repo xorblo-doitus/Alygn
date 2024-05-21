@@ -9,6 +9,6 @@ script = ExtResource("1_whyl2")
 sprite_texture = ExtResource("3_tmwor")
 animation = &"floating"
 shadow_color = Color(0, 0, 0.290196, 0.294118)
-shadow_size = Vector2(0.25, 0.1)
+shadow_size = Vector2(0.281, 0.113)
 shadow_texture = ExtResource("2_8n102")
 type = 2

@@ -9,6 +9,6 @@ script = ExtResource("1_fpa3r")
 sprite_texture = ExtResource("3_cq241")
 animation = &"breath"
 shadow_color = Color(0, 0, 0, 1)
-shadow_size = Vector2(0.5, 0.2)
+shadow_size = Vector2(0.405, 0.162)
 shadow_texture = ExtResource("2_o8ori")
 type = 1
