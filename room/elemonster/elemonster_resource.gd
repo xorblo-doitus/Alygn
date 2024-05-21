@@ -8,6 +8,7 @@ var type: Element.Type
 
 @export_group("sprite")
 @export var sprite_texture: Texture2D = preload("uid://b4pa5shn6ohxp") #"res://room/elemonster/sprites/bush.png"
+@export var on_sprite_texture: Texture2D = preload("uid://bycienswnylcd") #"res://room/elemonster/sprites/bush_on.png"
 @export var animation: StringName = &"breath"
 
 @export_group("shadow")

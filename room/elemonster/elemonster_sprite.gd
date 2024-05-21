@@ -20,6 +20,18 @@ var monster_height: float = 0.0:
 @onready var idle_animation_player: AnimationPlayer = $IdleAnimationPlayer
 
 
+## Shows that it's powered
+var on: bool:
+	set(new):
+		on = new
+		if not (elemonster_resource and is_node_ready()):
+			return
+		
+		monster_sprite.texture = elemonster_resource.on_sprite_texture if on else elemonster_resource.sprite_texture
+		idle_animation_player.speed_scale = 3.0 if on else 1.0
+
+
+
 func _ready() -> void:
 	update_elemonster_resource()
 
