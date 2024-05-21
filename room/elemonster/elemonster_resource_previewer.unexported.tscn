@@ -8,9 +8,13 @@ script/source = "@tool
 extends ElemonsterSprite
 
 
+var previous_hash := {}.hash()
 func _process(delta: float) -> void:
 	if elemonster_resource:
-		update_elemonster_resource()
+		var hash := inst_to_dict(elemonster_resource).hash()
+		if previous_hash != hash:
+			previous_hash = hash
+			update_elemonster_resource()
 "
 
 [node name="ElemonsterResourcePreviewer" type="Node2D"]
